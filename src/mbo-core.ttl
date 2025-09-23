@@ -1,0 +1,174 @@
+@prefix mbo:   <http://purl.org/mapp/mbo#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+
+<http://purl.org/mapp/mbo>
+  a owl:Ontology ;
+  rdfs:label "Mouse Behavior Ontology (MBO)"@en ;
+  rdfs:comment "Ontology for mouse behaviors with operational (lab) definitions."@en ;
+  owl:versionIRI <http://purl.org/mapp/mbo/0.2.0> .
+
+### ——— Foundations ———
+mbo:Behavior a owl:Class ;
+  rdfs:label "Behavior"@en ;
+  rdfs:comment "Observable action/state of a mouse, time-bounded or instantaneous."@en .
+
+mbo:StateBehavior a owl:Class ;
+  rdfs:subClassOf mbo:Behavior ;
+  rdfs:label "State behavior"@en ;
+  rdfs:comment "Has non-zero temporal extent (start/end)."@en .
+
+mbo:EventBehavior a owl:Class ;
+  rdfs:subClassOf mbo:Behavior ;
+  rdfs:label "Event behavior"@en ;
+  rdfs:comment "Instantaneous annotation."@en .
+
+mbo:PrimitiveBehavior a owl:Class ;
+  rdfs:subClassOf mbo:Behavior ;
+  rdfs:label "Primitive behavior"@en .
+
+mbo:CompositeBehavior a owl:Class ;
+  rdfs:subClassOf mbo:Behavior ;
+  rdfs:label "Composite behavior"@en .
+
+mbo:hasPart a owl:ObjectProperty ;
+  rdfs:domain mbo:CompositeBehavior ; rdfs:range mbo:Behavior ;
+  rdfs:label "has part"@en .
+
+### Timing & evidence
+mbo:hasStart a owl:DatatypeProperty ; rdfs:domain mbo:Behavior ; rdfs:range xsd:dateTime ; rdfs:label "start time"@en .
+mbo:hasEnd   a owl:DatatypeProperty ; rdfs:domain mbo:Behavior ; rdfs:range xsd:dateTime ; rdfs:label "end time"@en .
+mbo:hasDuration a owl:DatatypeProperty ; rdfs:domain mbo:Behavior ; rdfs:range xsd:decimal ; rdfs:label "duration (s)"@en .
+
+mbo:confidence a owl:DatatypeProperty ; rdfs:domain mbo:Behavior ; rdfs:range xsd:decimal ; rdfs:label "classifier confidence [0–1]"@en .
+mbo:evidence   a owl:DatatypeProperty ; rdfs:domain mbo:Behavior ; rdfs:range xsd:string ;  rdfs:label "evidence (heuristics, model, notes)"@en .
+
+### Provenance hooks (optional)
+mbo:observedIn a owl:ObjectProperty ; rdfs:domain mbo:Behavior ; rdfs:range prov:Activity ; rdfs:label "observed in session/assay"@en .
+mbo:performedBy a owl:ObjectProperty ; rdfs:domain mbo:Behavior ; rdfs:range prov:Entity ; rdfs:label "performed by subject"@en .
+
+### ——— Behavior categories (SKOS for facets) ———
+mbo:BehaviorCategoryScheme a skos:ConceptScheme ;
+  skos:prefLabel "Behavior categories"@en .
+
+mbo:Cat_Exploratory a skos:Concept ; skos:inScheme mbo:BehaviorCategoryScheme ; skos:prefLabel "Exploratory"@en .
+mbo:Cat_Locomotion  a skos:Concept ; skos:inScheme mbo:BehaviorCategoryScheme ; skos:prefLabel "Locomotion"@en .
+mbo:Cat_Olfactory   a skos:Concept ; skos:inScheme mbo:BehaviorCategoryScheme ; skos:prefLabel "Olfactory investigation"@en .
+
+### ——— Seed behaviors from your corpus ———
+
+# Locomotion (state)
+mbo:Locomotion a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Locomotion"@en ;
+  dct:description "Self-propelled horizontal displacement in the arena; typically quantified by distance, speed, time moving, stops."@en ;
+  skos:broader mbo:Cat_Locomotion ;
+  skos:closeMatch <http://purl.obolibrary.org/obo/NBO_0000009> ,  # locomotory behavior phenotype
+                  <http://purl.obolibrary.org/obo/GO_0071965> ;   # multicellular organismal locomotion
+  dct:source "PMCID:PMC5392231; PMCID:PMC12058001; PMID:17309661" .
+
+# Rearing (state; exploratory vertical)
+mbo:Rearing a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Rearing"@en ;
+  dct:description "Upright posture with forepaws off substrate; supported (against wall/object) or unsupported (free)."@en ;
+  skos:broader mbo:Cat_Exploratory ;
+  dct:source "PMCID:PMC5091939; PMCID:PMC12058001; PMID:31928053" .
+
+mbo:RearingSupported a owl:Class ;
+  rdfs:subClassOf mbo:Rearing ;
+  rdfs:label "Rearing (supported)"@en ;
+  dct:description "Rearing with forepaws contacting wall/object."@en .
+
+mbo:RearingUnsupported a owl:Class ;
+  rdfs:subClassOf mbo:Rearing ;
+  rdfs:label "Rearing (unsupported)"@en ;
+  dct:description "Rearing without forepaw support; often considered context/stress sensitive."@en ;
+  dct:source "PMCID:PMC12058001 (Sturman et al., 2018 cited there)" .
+
+# Digging (state; exploratory of substrate)
+mbo:Digging a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Digging"@en ;
+  dct:description "Vigorous displacement of substrate with forepaws, hind limbs spread; substrate moved under body or to sides."@en ;
+  skos:broader mbo:Cat_Exploratory ;
+  dct:source "PMCID:PMC9066774 (Layne & Ehrhart, 1970; Webster et al., 1981)" .
+
+# Climbing (state; grid/wall climbing distinct from rearing)
+mbo:Climbing a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Climbing"@en ;
+  dct:description "Vertical locomotor action on walls/grids; fore- and hindlimb engagement with vertical surfaces."@en ;
+  skos:broader mbo:Cat_Exploratory ;
+  dct:source "PMID:31928053 (grid-climbing metrics)" .
+
+# Sniffing (state/event; olfactory investigation with nose proximity)
+mbo:Sniffing a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Sniffing"@en ;
+  dct:description "Nasal-oriented investigation; increased inhalation frequency; often defined by nose proximity threshold to object/spot."@en ;
+  skos:broader mbo:Cat_Olfactory ;
+  dct:source "PMCID:PMC3128824; PMCID:PMC7101161 (≤1.5 cm spot proximity); PMID:32265632 (casting amplitude)" .
+
+mbo:HeadDip a owl:Class ;
+  rdfs:subClassOf mbo:EventBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Head-dip"@en ;
+  dct:description "Momentary insertion/orientation of head into hole/edge recess; classic hole-board measure of exploration."@en ;
+  skos:broader mbo:Cat_Exploratory .
+
+# Exploratory (composite umbrella that collects primitives)
+mbo:ExploratoryBehavior a owl:Class ;
+  rdfs:subClassOf mbo:CompositeBehavior ;
+  rdfs:label "Exploratory behavior (composite)"@en ;
+  dct:description "Composite label covering primitives such as locomotion, rearing, sniffing, head-dipping, digging, climbing."@en ;
+  mbo:hasPart mbo:Locomotion , mbo:Rearing , mbo:Sniffing , mbo:HeadDip , mbo:Digging , mbo:Climbing ;
+  skos:closeMatch <http://purl.obolibrary.org/obo/GO_0035640> ; # exploration behavior
+  dct:source "Your corpus (multiple PMCs/PMIDs)" .
+
+### Targets & simple geometry (needed for approach/avoidance/orienting)
+mbo:hasTarget a owl:ObjectProperty ;
+  rdfs:domain mbo:Behavior ;
+  rdfs:range  owl:Thing ;
+  rdfs:label "has target object/region"@en ;
+  dct:description "The object, region, or stimulus toward which the behavior is directed."@en .
+
+mbo:distanceToTarget a owl:DatatypeProperty ;
+  rdfs:domain mbo:Behavior ;
+  rdfs:range  xsd:decimal ;
+  rdfs:label "distance to target (cm)"@en .
+
+mbo:headingToTarget a owl:DatatypeProperty ;
+  rdfs:domain mbo:Behavior ;
+  rdfs:range  xsd:decimal ;
+  rdfs:label "heading to target (deg)"@en ;
+  dct:description "Heading angle relative to target; smaller means more directly toward."@en .
+
+### Behavior category for approach/avoid
+mbo:Cat_ApproachAvoid a skos:Concept ; skos:inScheme mbo:BehaviorCategoryScheme ;
+  skos:prefLabel "Approach/Avoidance"@en .
+
+### APPROACH (state/event — many labs treat as short state with duration)
+mbo:Approach a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Approach"@en ;
+  dct:description "Movement that reduces distance to a specified target (object/zone/conspecific), typically within a short time window."@en ;
+  skos:broader mbo:Cat_ApproachAvoid .
+
+### AVOIDANCE
+mbo:Avoidance a owl:Class ;
+  rdfs:subClassOf mbo:StateBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Avoidance"@en ;
+  dct:description "Movement that increases distance from a specified target (object/zone/conspecific), often with increased speed or abrupt turning."@en ;
+  skos:broader mbo:Cat_ApproachAvoid .
+
+### ORIENTING / ATTENTION (event or short state)
+mbo:Orienting a owl:Class ;
+  rdfs:subClassOf mbo:EventBehavior , mbo:PrimitiveBehavior ;
+  rdfs:label "Orienting"@en ;
+  dct:description "A rapid head/body alignment toward a stimulus; may be operationalized by head angle reduction below a threshold toward target."@en ;
+  skos:broader mbo:Cat_ApproachAvoid .

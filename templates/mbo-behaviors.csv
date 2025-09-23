@@ -1,0 +1,11 @@
+Behavior IRI,Label,Parent Types (|),IsComposite,Definition,Category,Evidence (PMIDs/PMCIDs),External xref (CURIEs)
+mbo:Locomotion,Locomotion,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Self-propelled horizontal displacement; distance, speed, stops.",Cat_Locomotion,"PMCID:PMC5392231; PMCID:PMC12058001; PMID:17309661","NBO:0000009|GO:0071965"
+mbo:Rearing,Rearing,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Upright posture with forepaws off substrate; supported/unsupported.",Cat_Exploratory,"PMCID:PMC5091939; PMCID:PMC12058001; PMID:31928053",""
+mbo:Digging,Digging,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Vigorous displacement of substrate with forepaws; hind limbs spread.",Cat_Exploratory,"PMCID:PMC9066774",""
+mbo:Climbing,Climbing,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Vertical locomotion on walls/grids.",Cat_Exploratory,"PMID:31928053",""
+mbo:Sniffing,Sniffing,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Nasal-oriented investigation; proximity threshold often applied.",Cat_Olfactory,"PMCID:PMC3128824; PMCID:PMC7101161; PMID:32265632",""
+mbo:HeadDip,Head-dip,mbo:EventBehavior|mbo:PrimitiveBehavior,false,"Momentary head insertion/orientation into hole/recess.",Cat_Exploratory,,""
+mbo:ExploratoryBehavior,Exploratory behavior,mbo:CompositeBehavior,true,"Composite of locomotion, rearing, sniffing, head-dipping, digging, climbing.",,,"GO:0035640"
+mbo:Approach,Approach,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Movement reducing distance to a specified target.",Cat_ApproachAvoid,,
+mbo:Avoidance,Avoidance,mbo:StateBehavior|mbo:PrimitiveBehavior,false,"Movement increasing distance from a specified target.",Cat_ApproachAvoid,,
+mbo:Orienting,Orienting,mbo:EventBehavior|mbo:PrimitiveBehavior,false,"Rapid head/body alignment toward a stimulus.",Cat_ApproachAvoid,,

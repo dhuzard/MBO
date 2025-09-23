@@ -1,0 +1,21 @@
+@prefix mbo:  <http://purl.org/mapp/mbo#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix obo:  <http://purl.obolibrary.org/obo/> .
+
+mbo:MeasureScheme a skos:ConceptScheme ; skos:prefLabel "Behavioral measures"@en .
+
+mbo:TotalDistance a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Total distance traveled"@en .
+mbo:MeanSpeed     a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Mean speed"@en .
+mbo:TimeMoving    a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Time spent moving"@en ;
+  skos:relatedMatch obo:CMO_0000954 ;
+  skos:note "Related to CMO voluntary mobility/immobility measurement; CMO models measurement types, not these feature terms."@en .
+mbo:TimeCenter    a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Percent time in center"@en .
+mbo:RearingCount  a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Rearing count"@en .
+mbo:RearingDur    a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Rearing duration"@en .
+mbo:ClimbingCount a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Climbing count"@en .
+mbo:ClimbingDur   a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Climbing duration"@en .
+mbo:PathCircuity  a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Path circuity"@en ;
+  skos:note "Euclidean / traveled distance (0–1), lower = more circuitous."@en .
+mbo:SniffDuration a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Sniff duration"@en .
+mbo:SnoutProximity a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Nose-to-object distance"@en .
+mbo:CastingAmplitude a skos:Concept ; skos:inScheme mbo:MeasureScheme ; skos:prefLabel "Casting amplitude"@en .

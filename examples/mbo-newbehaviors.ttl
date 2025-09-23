@@ -1,0 +1,27 @@
+@prefix ex:  <http://example.org/> .
+@prefix mbo: <http://purl.org/mapp/mbo#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Define a dummy target (could be an object or a zone)
+ex:novelObject1 a ex:Object ; ex:label "Cube A" .
+
+ex:app1 a mbo:Approach ;
+  mbo:hasStart "2025-09-23T14:05:00Z"^^xsd:dateTime ;
+  mbo:hasEnd   "2025-09-23T14:05:02Z"^^xsd:dateTime ;
+  mbo:performedBy ex:mouseA ;
+  mbo:hasTarget ex:novelObject1 ;
+  mbo:distanceToTarget 12.3 ;
+  mbo:headingToTarget 10.5 .
+
+ex:avoid1 a mbo:Avoidance ;
+  mbo:hasStart "2025-09-23T14:05:05Z"^^xsd:dateTime ;
+  mbo:hasEnd   "2025-09-23T14:05:06Z"^^xsd:dateTime ;
+  mbo:performedBy ex:mouseA ;
+  mbo:hasTarget ex:novelObject1 ;
+  mbo:distanceToTarget 28.8 .
+
+ex:ori1 a mbo:Orienting ;
+  mbo:hasStart "2025-09-23T14:05:04Z"^^xsd:dateTime ;
+  mbo:performedBy ex:mouseA ;
+  mbo:hasTarget ex:novelObject1 ;
+  mbo:headingToTarget 5.0 .

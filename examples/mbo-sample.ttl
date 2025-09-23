@@ -1,0 +1,12 @@
+@prefix mbo: <http://purl.org/mapp/mbo#> .
+@prefix ex:  <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:b1 a mbo:Rearing ;
+  mbo:hasStart "2025-09-23T14:02:03Z"^^xsd:dateTime ;
+  mbo:hasEnd   "2025-09-23T14:02:05Z"^^xsd:dateTime ;
+  mbo:performedBy ex:mouseA .
+
+ex:b2 a mbo:HeadDip ;
+  mbo:hasStart "2025-09-23T14:03:00Z"^^xsd:dateTime ;
+  mbo:performedBy ex:mouseA .

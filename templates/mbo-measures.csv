@@ -1,0 +1,13 @@
+Concept IRI,Label,Note
+mbo:TotalDistance,Total distance traveled,
+mbo:MeanSpeed,Mean speed,
+mbo:TimeMoving,Time spent moving,
+mbo:TimeCenter,Percent time in center,">= 3 grid squares from edges is one common definition"
+mbo:RearingCount,Rearing count,
+mbo:RearingDur,Rearing duration,
+mbo:ClimbingCount,Climbing count,
+mbo:ClimbingDur,Climbing duration,
+mbo:PathCircuity,Path circuity,"Euclidean/traveled; lower=more circuitous"
+mbo:SniffDuration,Sniff duration,
+mbo:SnoutProximity,Nose-to-object distance,"≤ 1.5 cm used in spot tests"
+mbo:CastingAmplitude,Casting amplitude,"Lateral nose movement during source localization"
