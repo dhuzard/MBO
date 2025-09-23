@@ -1,181 +1,80 @@
-Here’s a **comprehensive README.md** you can drop into the root of your repo.
-It explains *what MBO is*, *why ontologies matter*, the *repo structure*, and how to *use/validate/extend it*.
+# Mouse Behavior Ontology (MBO)
 
----
+MBO is an ontology for describing mouse behaviors with operational (lab) definitions and clear mappings to external standards. It focuses on observable actions and states (e.g., locomotion, rearing, sniffing) grounded in literature.
 
-```markdown
-# 🐭 Mouse Behavior Ontology (MBO)
+What’s here:
+- Core ontology: `src/mbo-core.ttl`
+- Measures vocabulary (SKOS): `vocab/mbo-measures.ttl`
+- SHACL shapes: `shapes/mbo-profile.shacl.ttl`
+- CSV templates: `templates/`
+- CSV → TTL generator: `generate_ttl.py`
+- Examples: `examples/`
+- Generated output: `build/mbo-generated.ttl`
 
-**MBO** is an open ontology for describing mouse behaviors in preclinical and neuroscience research.  
-It is designed to capture **observable actions** (e.g. locomotion, rearing, sniffing) in a **machine-readable, interoperable** way, with traceable definitions from experimental literature.
+## Why this matters
+- Shared definitions enable comparable, interoperable datasets.
+- SHACL shapes enforce consistent annotations (e.g., states have end time, events don’t).
+- SKOS mappings connect to NBO/GO/CMO when appropriate.
 
-This repository provides:
-
-- A **core ontology** (`src/mbo-core.ttl`) defining the backbone concepts (behaviors, states, events, transitions, metrics).
-- **Vocabulary files** (`vocab/`) for categories, measures, and SKOS groupings.
-- **SHACL profiles** (`shapes/`) that specify **validation rules** (e.g. state behaviors need start+end times, events should not have end times).
-- **CSV templates** (`templates/`) so you can **add new behaviors or measures** without writing RDF manually.
-- A **generator script** (`generate_ttl.py`) to turn CSVs into proper RDF/OWL.
-- **Examples** (`examples/`) to test behaviors and validation.
-- **Build artifacts** (`build/`) with generated TTLs.
-
----
-
-## 🌱 Why Ontologies?
-
-In behavioral neuroscience, the same behavior can be described in many ways:
-- “rearing”, “vertical exploration”, “standing on hindlimbs”…  
-- or measured differently: counts, duration, supported vs unsupported.
-
-An ontology:
-- Provides **shared definitions** with clear semantics.  
-- Links to **external standards** (GO, NBO, CMO, etc.) where possible.  
-- Makes data **interoperable**: your “rearing” is the same as mine if both point to `mbo:Rearing`.  
-- Supports **validation**: SHACL ensures your data instances conform to definitions.
-
----
-
-## 📂 Folder Structure
-
+## Repository structure
+```
+src/                 core ontology (OWL + some SKOS categories)
+vocab/               SKOS vocabularies (measures)
+shapes/              SHACL constraints
+templates/           CSV templates for behaviors/measures
+examples/            sample instance data
+build/               generated TTL files (artifacts)
+generate_ttl.py      CSV → TTL generator for behaviors
 ```
 
-MBO/
-├─ src/                # Core ontology files
-│   └─ mbo-core.ttl
-├─ vocab/              # Controlled vocabularies (SKOS)
-│   ├─ mbo-behaviors.ttl
-│   └─ mbo-measures.ttl
-├─ shapes/             # SHACL validation shapes
-│   └─ mbo-profile.shacl.ttl
-├─ templates/          # CSV templates for generating ontology content
-│   └─ mbo-behaviors.csv
-├─ build/              # Auto-generated TTL files (from CSVs)
-│   └─ mbo-generated.ttl
-├─ examples/           # Example data instances
-│   └─ mbo-newbehaviors.ttl
-├─ generate\_ttl.py     # CSV → TTL generator script
-└─ README.md
+## Workflow
+1) Define or edit behaviors in `templates/mbo-behaviors.csv`:
+   - Behavior IRI, label
+   - Parent types (e.g., `mbo:StateBehavior|mbo:PrimitiveBehavior`)
+   - Definition, category, evidence
+   - External xrefs (CURIEs like `NBO:0000009|GO:0071965`)
 
-````
+2) Generate TTL
+- `python3 generate_ttl.py` (writes `build/mbo-generated.ttl`)
 
----
+3) Validate with SHACL (recommended)
+- Install tools: `pip install rdflib pyshacl`
+- Validate examples against shapes and ontologies:
+  - `pyshacl -s shapes/mbo-profile.shacl.ttl -m -f human -e src/mbo-core.ttl -e vocab/mbo-measures.ttl -e build/mbo-generated.ttl examples/mbo-newbehaviors.ttl`
 
-## ⚙️ Workflow
+Expected: `Conforms: True`. If not, the report explains violations (e.g., missing `mbo:hasEnd` for a state behavior).
 
-1. **Define new behaviors in CSV**  
-   Edit `templates/mbo-behaviors.csv` and add rows with:
-   - IRI (`mbo:Approach`),  
-   - label,  
-   - parent types (StateBehavior/EventBehavior, Primitive/Composite),  
-   - definition, category, evidence, external xrefs.
+## SKOS mapping guidance (used here)
+- `skos:exactMatch`: only when IRIs are fully substitutable (rare across modeling layers).
+- `skos:closeMatch`: near-equivalent meaning with different modeling scope.
+  - Example: `mbo:Locomotion` ↔ `NBO:0000009`, `GO:0071965`.
+  - Example: `mbo:ExploratoryBehavior` ↔ `GO:0035640`.
+- `skos:relatedMatch`: helpful pointer across layers (e.g., measurement type vs feature term).
+  - Example: `mbo:TimeMoving` ↔ `CMO:0000954`.
 
-2. **Generate TTL**  
-   Run the script:
+## Quality check summary
+- CSV → TTL generation runs: `build/mbo-generated.ttl` is produced and syntactically tidy (no trailing semicolons).
+- Ontology consistency: classes and properties referenced by shapes/examples are defined in `src/mbo-core.ttl`.
+- Measures vocab: added `obo:` prefix and `skos:relatedMatch` to CMO where appropriate.
+- Note: If you run pySHACL locally, use the command above to fully validate (this environment lacked pip tooling).
 
-   ```powershell
-   python generate_ttl.py
-````
+## Roadmap / suggestions
+- Generator enhancements:
+  - Add `MappingProperty` column per xref (e.g., `closeMatch`, `relatedMatch`) instead of defaulting to `closeMatch`.
+  - Add a `templates/mbo-measures.csv` generator to produce a measures TTL (parallel to `vocab/mbo-measures.ttl`).
+  - Escape and datatype handling (units): consider QUDT/OM for measures and add SHACL unit constraints.
+- Ontology refinements:
+  - Define supported/unsupported rearing explicitly (classes exist in core, can add to CSV when needed).
+  - Consider `mbo:TransitionBehavior` if you later model transitions or bouts.
+  - Introduce controlled individuals for experimental zones/objects to standardize `mbo:hasTarget`.
+- Validation/automation:
+  - Add a GitHub Actions workflow to run: CSV→TTL, RDF parse (rdflib), SHACL validation (pySHACL), and diff on build artifacts.
+  - Add a small `tests/` directory with sample graphs and expected SHACL conformance.
+- Documentation:
+  - Add a short “data modeling examples” section showing typical annotations for each primitive behavior.
+  - Add license (suggested: CC-BY 4.0 for ontology; Apache-2.0 or MIT for code).
 
-→ Creates/updates `build/mbo-generated.ttl`.
-
-3. **Validate with SHACL**
-   Test your ontology + vocab + instances:
-
-   ```powershell
-   pyshacl -s shapes/mbo-profile.shacl.ttl -m -f human -e src/mbo-core.ttl -e vocab/mbo-behaviors.ttl -e vocab/mbo-measures.ttl -e build/mbo-generated.ttl examples/mbo-newbehaviors.ttl
-   ```
-
-   Expected output:
-
-   ```
-   Validation Report
-   Conforms: True
-   ```
-
-   If `Conforms: False`, SHACL will print the violations (e.g., missing `hasEnd` for a state behavior).
-
----
-
-## 🧩 Components Explained
-
-* **Core ontology (`src/mbo-core.ttl`)**
-  The backbone: defines `mbo:Behavior`, `mbo:StateBehavior`, `mbo:EventBehavior`, properties like `mbo:hasStart`, `mbo:hasEnd`, `mbo:performedBy`.
-
-* **Vocabularies (`vocab/`)**
-  SKOS lists of categories and measures, e.g.:
-
-  * `mbo:Cat_Exploratory` (Exploratory category).
-  * `mbo:TotalDistance`, `mbo:RearingCount`, `mbo:PathCircuity` (common measures).
-
-* **Shapes (`shapes/`)**
-  SHACL constraints ensure data consistency. Examples:
-
-  * `StateBehavior` must have an `mbo:hasEnd`.
-  * `EventBehavior` must **not** have an end.
-  * `Approach` and `Avoidance` must reference a `mbo:hasTarget`.
-
-* **Templates (`templates/`)**
-  CSVs you can edit in Excel/Google Sheets. The generator script will turn them into TTL.
-
-* **Build (`build/`)**
-  Output of the generator. Treated as artifacts—don’t edit by hand.
-
-* **Examples (`examples/`)**
-  Ready-to-validate Turtle data with sample behaviors (Approach, Avoidance, Orienting, etc.).
-
----
-
-## 🔎 Results
-
-* **Reusable ontology**: behavior terms with operational definitions, grounded in PubMed evidence.
-* **Validation**: pySHACL confirms whether behavior data files match the ontology rules.
-* **Interoperability**: SKOS mappings link to existing ontologies (e.g., NBO, GO, CMO).
-* **Extensibility**: add new behaviors/measures in CSV, regenerate, validate—no RDF knowledge required.
-
----
-
-## 🏃 Quickstart
-
-```powershell
-# Setup
-python -m venv .venv
-.venv\Scripts\activate
-pip install pyshacl rdflib
-
-# Generate TTL from CSV
-python generate_ttl.py
-
-# Validate example
-pyshacl -s shapes/mbo-profile.shacl.ttl -m -f human `
-  -e src/mbo-core.ttl `
-  -e vocab/mbo-behaviors.ttl `
-  -e vocab/mbo-measures.ttl `
-  -e build/mbo-generated.ttl `
-  examples/mbo-newbehaviors.ttl
-```
-
----
-
-## 📚 Learn More
-
-* [SKOS Primer (W3C)](https://www.w3.org/TR/skos-primer/) — controlled vocabularies.
-* [SHACL Primer (W3C)](https://www.w3.org/TR/shacl/) — validation of RDF data.
-* [pySHACL docs](https://github.com/RDFLib/pySHACL) — Python SHACL validator.
-* [OBO Foundry](http://obofoundry.org/) — ecosystem of biomedical ontologies.
-
----
-
-## 🤝 Contributions
-
-* Add behaviors via `templates/mbo-behaviors.csv`.
-* Provide PubMed/PMC evidence where possible (`Evidence` column).
-* Use `skos:closeMatch` or `skos:relatedMatch` for external ontology mappings (avoid `exactMatch` unless truly identical).
-* Open pull requests with new terms, categories, or measures.
-
----
-
-## 📜 License
-
-TBD — consider **CC-BY 4.0** for ontology terms and code.
-
-
+## Contributing
+- Propose new behaviors/measures via CSVs; include PubMed/PMC evidence.
+- Use SKOS mappings conservatively (`closeMatch` vs `relatedMatch` per guidance above).
+- Open PRs with clear rationale and references.

@@ -14,6 +14,9 @@ prefixes = """@prefix mbo:   <http://purl.org/mapp/mbo#> .
 
 """
 
+def esc(s: str) -> str:
+    return s.replace('"', '\\"')
+
 with csv_path.open(newline='', encoding="utf-8") as f, out_path.open("w", encoding="utf-8") as out:
     reader = csv.DictReader(f)
     out.write(prefixes)
@@ -21,6 +24,8 @@ with csv_path.open(newline='', encoding="utf-8") as f, out_path.open("w", encodi
 
     for row in reader:
         iri = row["Behavior IRI"].strip()
+        if not iri:
+            continue
         label = row["Label"].strip()
         parents = [p.strip() for p in row["Parent Types (|)"].split("|") if p.strip()]
         definition = row["Definition"].strip()
@@ -28,28 +33,26 @@ with csv_path.open(newline='', encoding="utf-8") as f, out_path.open("w", encodi
         evidence = row["Evidence (PMIDs/PMCIDs)"].strip()
         xrefs = [x.strip() for x in row["External xref (CURIEs)"].split("|") if row["External xref (CURIEs)"].strip()]
 
-        out.write(f"{iri} a owl:Class ;\n")
-        out.write(f'  rdfs:label "{label}"@en ;\n')
-
+        po_list = []
+        po_list.append('a owl:Class')
+        if label:
+            po_list.append(f'rdfs:label "{esc(label)}"@en')
         for parent in parents:
-            out.write(f"  rdfs:subClassOf {parent} ;\n")
-
+            po_list.append(f"rdfs:subClassOf {parent}")
         if definition:
-            out.write(f'  dct:description "{definition}"@en ;\n')
-
+            po_list.append(f'dct:description "{esc(definition)}"@en')
         if category:
-            out.write(f"  skos:broader mbo:{category} ;\n")
-
+            po_list.append(f"skos:broader mbo:{category}")
         if evidence:
-            out.write(f'  dct:source "{evidence}" ;\n')
-
+            po_list.append(f'dct:source "{esc(evidence)}"')
         for x in xrefs:
-            # Expand CURIEs like NBO:0000009 → http://purl.obolibrary.org/obo/NBO_0000009
             if ":" in x:
                 prefix, local = x.split(":", 1)
                 url = f"http://purl.obolibrary.org/obo/{prefix}_{local}"
-                out.write(f"  skos:closeMatch <{url}> ;\n")
+                po_list.append(f"skos:closeMatch <{url}>")
 
-        out.write("  .\n\n")
+        out.write(f"{iri} ")
+        out.write(" ;\n  ".join(po_list))
+        out.write(" .\n\n")
 
 print(f"✅ Wrote {out_path}")

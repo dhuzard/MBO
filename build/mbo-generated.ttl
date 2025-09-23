@@ -14,8 +14,7 @@ mbo:Locomotion a owl:Class ;
   skos:broader mbo:Cat_Locomotion ;
   dct:source "PMCID:PMC5392231; PMCID:PMC12058001; PMID:17309661" ;
   skos:closeMatch <http://purl.obolibrary.org/obo/NBO_0000009> ;
-  skos:closeMatch <http://purl.obolibrary.org/obo/GO_0071965> ;
-  .
+  skos:closeMatch <http://purl.obolibrary.org/obo/GO_0071965> .
 
 mbo:Rearing a owl:Class ;
   rdfs:label "Rearing"@en ;
@@ -23,8 +22,7 @@ mbo:Rearing a owl:Class ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Upright posture with forepaws off substrate; supported/unsupported."@en ;
   skos:broader mbo:Cat_Exploratory ;
-  dct:source "PMCID:PMC5091939; PMCID:PMC12058001; PMID:31928053" ;
-  .
+  dct:source "PMCID:PMC5091939; PMCID:PMC12058001; PMID:31928053" .
 
 mbo:Digging a owl:Class ;
   rdfs:label "Digging"@en ;
@@ -32,8 +30,7 @@ mbo:Digging a owl:Class ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Vigorous displacement of substrate with forepaws; hind limbs spread."@en ;
   skos:broader mbo:Cat_Exploratory ;
-  dct:source "PMCID:PMC9066774" ;
-  .
+  dct:source "PMCID:PMC9066774" .
 
 mbo:Climbing a owl:Class ;
   rdfs:label "Climbing"@en ;
@@ -41,8 +38,7 @@ mbo:Climbing a owl:Class ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Vertical locomotion on walls/grids."@en ;
   skos:broader mbo:Cat_Exploratory ;
-  dct:source "PMID:31928053" ;
-  .
+  dct:source "PMID:31928053" .
 
 mbo:Sniffing a owl:Class ;
   rdfs:label "Sniffing"@en ;
@@ -50,45 +46,39 @@ mbo:Sniffing a owl:Class ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Nasal-oriented investigation; proximity threshold often applied."@en ;
   skos:broader mbo:Cat_Olfactory ;
-  dct:source "PMCID:PMC3128824; PMCID:PMC7101161; PMID:32265632" ;
-  .
+  dct:source "PMCID:PMC3128824; PMCID:PMC7101161; PMID:32265632" .
 
 mbo:HeadDip a owl:Class ;
   rdfs:label "Head-dip"@en ;
   rdfs:subClassOf mbo:EventBehavior ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Momentary head insertion/orientation into hole/recess."@en ;
-  skos:broader mbo:Cat_Exploratory ;
-  .
+  skos:broader mbo:Cat_Exploratory .
 
 mbo:ExploratoryBehavior a owl:Class ;
   rdfs:label "Exploratory behavior"@en ;
   rdfs:subClassOf mbo:CompositeBehavior ;
   dct:description "Composite of locomotion, rearing, sniffing, head-dipping, digging, climbing."@en ;
-  skos:closeMatch <http://purl.obolibrary.org/obo/GO_0035640> ;
-  .
+  skos:closeMatch <http://purl.obolibrary.org/obo/GO_0035640> .
 
 mbo:Approach a owl:Class ;
   rdfs:label "Approach"@en ;
   rdfs:subClassOf mbo:StateBehavior ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Movement reducing distance to a specified target."@en ;
-  skos:broader mbo:Cat_ApproachAvoid ;
-  .
+  skos:broader mbo:Cat_ApproachAvoid .
 
 mbo:Avoidance a owl:Class ;
   rdfs:label "Avoidance"@en ;
   rdfs:subClassOf mbo:StateBehavior ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Movement increasing distance from a specified target."@en ;
-  skos:broader mbo:Cat_ApproachAvoid ;
-  .
+  skos:broader mbo:Cat_ApproachAvoid .
 
 mbo:Orienting a owl:Class ;
   rdfs:label "Orienting"@en ;
   rdfs:subClassOf mbo:EventBehavior ;
   rdfs:subClassOf mbo:PrimitiveBehavior ;
   dct:description "Rapid head/body alignment toward a stimulus."@en ;
-  skos:broader mbo:Cat_ApproachAvoid ;
-  .
+  skos:broader mbo:Cat_ApproachAvoid .
 
