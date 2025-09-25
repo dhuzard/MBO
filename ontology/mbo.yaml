@@ -1,0 +1,285 @@
+﻿metadata:
+  ontology_iri: "http://purl.org/mapp/mbo"
+  version_iri: "http://purl.org/mapp/mbo/0.2.0"
+  label: "Mouse Behavior Ontology (MBO)"
+  comment: "Ontology for mouse behaviors with operational (lab) definitions."
+
+prefixes:
+  mbo: "http://purl.org/mapp/mbo#"
+  prov: "http://www.w3.org/ns/prov#"
+  time: "http://www.w3.org/2006/time#"
+  skos: "http://www.w3.org/2004/02/skos/core#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  owl: "http://www.w3.org/2002/07/owl#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  dct: "http://purl.org/dc/terms/"
+  obo: "http://purl.obolibrary.org/obo/"
+  sh: "http://www.w3.org/ns/shacl#"
+
+concept_schemes:
+  - id: mbo:BehaviorCategoryScheme
+    scope: core
+    label: "Behavior categories"
+    concepts:
+      - id: mbo:Cat_Exploratory
+        pref_label: "Exploratory"
+      - id: mbo:Cat_Locomotion
+        pref_label: "Locomotion"
+      - id: mbo:Cat_Olfactory
+        pref_label: "Olfactory investigation"
+      - id: mbo:Cat_ApproachAvoid
+        pref_label: "Approach/Avoidance"
+  - id: mbo:MeasureScheme
+    scope: measures
+    label: "Behavioral measures"
+    concepts:
+      - id: mbo:TotalDistance
+        pref_label: "Total distance traveled"
+      - id: mbo:MeanSpeed
+        pref_label: "Mean speed"
+      - id: mbo:TimeMoving
+        pref_label: "Time spent moving"
+        related_match: obo:CMO_0000954
+        notes:
+          - "Related to CMO voluntary mobility/immobility measurement; CMO models measurement types, not the feature terms."
+      - id: mbo:TimeCenter
+        pref_label: "Percent time in center"
+      - id: mbo:RearingCount
+        pref_label: "Rearing count"
+      - id: mbo:RearingDur
+        pref_label: "Rearing duration"
+      - id: mbo:ClimbingCount
+        pref_label: "Climbing count"
+      - id: mbo:ClimbingDur
+        pref_label: "Climbing duration"
+      - id: mbo:PathCircuity
+        pref_label: "Path circuity"
+        notes:
+          - "Euclidean distance divided by traveled distance (0-1); lower values mean a more circuitous path."
+      - id: mbo:SniffDuration
+        pref_label: "Sniff duration"
+      - id: mbo:SnoutProximity
+        pref_label: "Nose-to-object distance"
+      - id: mbo:CastingAmplitude
+        pref_label: "Casting amplitude"
+
+classes:
+  - id: mbo:Behavior
+    label: "Behavior"
+    comment: "Observable action/state of a mouse, time-bounded or instantaneous."
+    section: foundations
+  - id: mbo:StateBehavior
+    label: "State behavior"
+    parents: [mbo:Behavior]
+    comment: "Has non-zero temporal extent (start/end)."
+    section: foundations
+  - id: mbo:EventBehavior
+    label: "Event behavior"
+    parents: [mbo:Behavior]
+    comment: "Instantaneous annotation."
+    section: foundations
+  - id: mbo:PrimitiveBehavior
+    label: "Primitive behavior"
+    parents: [mbo:Behavior]
+    section: foundations
+  - id: mbo:CompositeBehavior
+    label: "Composite behavior"
+    parents: [mbo:Behavior]
+    section: foundations
+  - id: mbo:Locomotion
+    label: "Locomotion"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Self-propelled horizontal displacement in the arena; typically quantified by distance, speed, time moving, and stops."
+    category: mbo:Cat_Locomotion
+    close_matches:
+      - "http://purl.obolibrary.org/obo/NBO_0000009"
+      - "http://purl.obolibrary.org/obo/GO_0071965"
+    sources:
+      - "PMCID:PMC5392231; PMCID:PMC12058001; PMID:17309661"
+    section: behaviors
+  - id: mbo:Rearing
+    label: "Rearing"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Upright posture with forepaws off substrate; supported (against wall/object) or unsupported (free)."
+    category: mbo:Cat_Exploratory
+    sources:
+      - "PMCID:PMC5091939; PMCID:PMC12058001; PMID:31928053"
+    section: behaviors
+  - id: mbo:RearingSupported
+    label: "Rearing (supported)"
+    parents: [mbo:Rearing]
+    description: "Rearing with forepaws contacting a wall or object."
+    section: behaviors
+  - id: mbo:RearingUnsupported
+    label: "Rearing (unsupported)"
+    parents: [mbo:Rearing]
+    description: "Rearing without forepaw support; often considered context or stress sensitive."
+    sources:
+      - "PMCID:PMC12058001 (Sturman et al., 2018 cited there)"
+    section: behaviors
+  - id: mbo:Digging
+    label: "Digging"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Vigorous displacement of substrate with forepaws; substrate moved under body or to sides."
+    category: mbo:Cat_Exploratory
+    sources:
+      - "PMCID:PMC9066774 (Layne & Ehrhart, 1970; Webster et al., 1981)"
+    section: behaviors
+  - id: mbo:Climbing
+    label: "Climbing"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Vertical locomotor action on walls or grids with fore- and hind-limb engagement."
+    category: mbo:Cat_Exploratory
+    sources:
+      - "PMID:31928053"
+    section: behaviors
+  - id: mbo:Sniffing
+    label: "Sniffing"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Nasal-oriented investigation; increased inhalation frequency; often defined by nose proximity threshold to object or spot."
+    category: mbo:Cat_Olfactory
+    sources:
+      - "PMCID:PMC3128824; PMCID:PMC7101161 (~1.5 cm spot proximity); PMID:32265632 (casting amplitude)"
+    section: behaviors
+  - id: mbo:HeadDip
+    label: "Head-dip"
+    parents: [mbo:EventBehavior, mbo:PrimitiveBehavior]
+    description: "Momentary insertion or orientation of head into a hole or edge recess; classic hole-board exploration measure."
+    category: mbo:Cat_Exploratory
+    section: behaviors
+  - id: mbo:ExploratoryBehavior
+    label: "Exploratory behavior (composite)"
+    parents: [mbo:CompositeBehavior]
+    description: "Composite label covering primitives such as locomotion, rearing, sniffing, head-dipping, digging, and climbing."
+    has_parts:
+      - mbo:Locomotion
+      - mbo:Rearing
+      - mbo:Sniffing
+      - mbo:HeadDip
+      - mbo:Digging
+      - mbo:Climbing
+    close_matches:
+      - "http://purl.obolibrary.org/obo/GO_0035640"
+    sources:
+      - "Multiple corpus references"
+    section: behaviors
+  - id: mbo:Approach
+    label: "Approach"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Movement that reduces distance to a specified target (object, zone, or conspecific) within a short time window."
+    category: mbo:Cat_ApproachAvoid
+    section: behaviors
+  - id: mbo:Avoidance
+    label: "Avoidance"
+    parents: [mbo:StateBehavior, mbo:PrimitiveBehavior]
+    description: "Movement that increases distance from a specified target, often with increased speed or abrupt turning."
+    category: mbo:Cat_ApproachAvoid
+    section: behaviors
+  - id: mbo:Orienting
+    label: "Orienting"
+    parents: [mbo:EventBehavior, mbo:PrimitiveBehavior]
+    description: "Rapid head or body alignment toward a stimulus; often operationalized by head angle reduction toward the target."
+    category: mbo:Cat_ApproachAvoid
+    section: behaviors
+
+object_properties:
+  - id: mbo:hasPart
+    label: "has part"
+    domain: mbo:CompositeBehavior
+    range: mbo:Behavior
+  - id: mbo:observedIn
+    label: "observed in session/assay"
+    domain: mbo:Behavior
+    range: prov:Activity
+  - id: mbo:performedBy
+    label: "performed by subject"
+    domain: mbo:Behavior
+    range: prov:Entity
+  - id: mbo:hasTarget
+    label: "has target object/region"
+    domain: mbo:Behavior
+    range: owl:Thing
+    description: "Object, region, or stimulus toward which the behavior is directed."
+
+datatype_properties:
+  - id: mbo:hasStart
+    label: "start time"
+    domain: mbo:Behavior
+    range: xsd:dateTime
+  - id: mbo:hasEnd
+    label: "end time"
+    domain: mbo:Behavior
+    range: xsd:dateTime
+  - id: mbo:hasDuration
+    label: "duration (s)"
+    domain: mbo:Behavior
+    range: xsd:decimal
+  - id: mbo:confidence
+    label: "classifier confidence [0-1]"
+    domain: mbo:Behavior
+    range: xsd:decimal
+  - id: mbo:evidence
+    label: "evidence (heuristics, model, notes)"
+    domain: mbo:Behavior
+    range: xsd:string
+  - id: mbo:distanceToTarget
+    label: "distance to target (cm)"
+    domain: mbo:Behavior
+    range: xsd:decimal
+  - id: mbo:headingToTarget
+    label: "heading to target (deg)"
+    domain: mbo:Behavior
+    range: xsd:decimal
+    comment: "Heading angle relative to target; smaller values mean more directly toward the target."
+
+shapes:
+  - id: mbo:BehaviorShape
+    target_class: mbo:Behavior
+    property_shapes:
+      - path: mbo:hasStart
+        min_count: 1
+        datatype: xsd:dateTime
+      - path: mbo:hasEnd
+        min_count: 0
+        datatype: xsd:dateTime
+      - path: mbo:performedBy
+        min_count: 1
+  - id: mbo:StateBehaviorShape
+    target_class: mbo:StateBehavior
+    property_shapes:
+      - path: mbo:hasEnd
+        min_count: 1
+        message: "State behaviors need end time."
+  - id: mbo:EventBehaviorShape
+    target_class: mbo:EventBehavior
+    property_shapes:
+      - path: mbo:hasEnd
+        max_count: 0
+        message: "Events must not have end time."
+  - id: mbo:SniffingShape
+    target_class: mbo:Sniffing
+    property_shapes:
+      - path: mbo:confidence
+        min_count: 0
+        datatype: xsd:decimal
+  - id: mbo:ApproachShape
+    target_class: mbo:Approach
+    property_shapes:
+      - path: mbo:hasTarget
+        min_count: 1
+        message: "Approach must reference a target (object/zone/stimulus)."
+  - id: mbo:AvoidanceShape
+    target_class: mbo:Avoidance
+    property_shapes:
+      - path: mbo:hasTarget
+        min_count: 1
+        message: "Avoidance must reference a target (object/zone/stimulus)."
+  - id: mbo:OrientingShape
+    target_class: mbo:Orienting
+    property_shapes:
+      - path: mbo:hasTarget
+        min_count: 1
+        message: "Orienting must reference a target."
+      - path: mbo:headingToTarget
+        min_count: 0
+        datatype: xsd:decimal

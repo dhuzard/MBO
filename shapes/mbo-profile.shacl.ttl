@@ -1,11 +1,13 @@
-@prefix sh:  <http://www.w3.org/ns/shacl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix mbo: <http://purl.org/mapp/mbo#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+# Auto-generated from ontology/mbo.yaml
+
 mbo:BehaviorShape a sh:NodeShape ;
   sh:targetClass mbo:Behavior ;
-  sh:property [ sh:path mbo:hasStart ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
-  sh:property [ sh:path mbo:hasEnd   ; sh:minCount 0 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path mbo:hasStart ; sh:datatype xsd:dateTime ; sh:minCount 1 ] ;
+  sh:property [ sh:path mbo:hasEnd ; sh:datatype xsd:dateTime ; sh:minCount 0 ] ;
   sh:property [ sh:path mbo:performedBy ; sh:minCount 1 ] .
 
 mbo:StateBehaviorShape a sh:NodeShape ;
@@ -16,25 +18,20 @@ mbo:EventBehaviorShape a sh:NodeShape ;
   sh:targetClass mbo:EventBehavior ;
   sh:property [ sh:path mbo:hasEnd ; sh:maxCount 0 ; sh:message "Events must not have end time." ] .
 
-# Optional operational constraints (examples):
 mbo:SniffingShape a sh:NodeShape ;
   sh:targetClass mbo:Sniffing ;
-  sh:property [ sh:path mbo:confidence ; sh:minCount 0 ; sh:datatype xsd:decimal ] .
+  sh:property [ sh:path mbo:confidence ; sh:datatype xsd:decimal ; sh:minCount 0 ] .
 
-# Approach/Avoidance should specify a target
 mbo:ApproachShape a sh:NodeShape ;
   sh:targetClass mbo:Approach ;
-  sh:property [ sh:path mbo:hasTarget ; sh:minCount 1 ;
-                sh:message "Approach must reference a target (object/zone/stimulus)." ] .
+  sh:property [ sh:path mbo:hasTarget ; sh:minCount 1 ; sh:message "Approach must reference a target (object/zone/stimulus)." ] .
 
 mbo:AvoidanceShape a sh:NodeShape ;
   sh:targetClass mbo:Avoidance ;
-  sh:property [ sh:path mbo:hasTarget ; sh:minCount 1 ;
-                sh:message "Avoidance must reference a target (object/zone/stimulus)." ] .
+  sh:property [ sh:path mbo:hasTarget ; sh:minCount 1 ; sh:message "Avoidance must reference a target (object/zone/stimulus)." ] .
 
-# Orienting: require target and (optionally) heading measure if present
 mbo:OrientingShape a sh:NodeShape ;
   sh:targetClass mbo:Orienting ;
-  sh:property [ sh:path mbo:hasTarget ; sh:minCount 1 ;
-                sh:message "Orienting must reference a target." ] ;
-  sh:property [ sh:path mbo:headingToTarget ; sh:minCount 0 ; sh:datatype xsd:decimal ] .
+  sh:property [ sh:path mbo:hasTarget ; sh:minCount 1 ; sh:message "Orienting must reference a target." ] ;
+  sh:property [ sh:path mbo:headingToTarget ; sh:datatype xsd:decimal ; sh:minCount 0 ] .
+
