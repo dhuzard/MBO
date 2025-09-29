@@ -1,0 +1,37 @@
+{
+  "behaviors": [
+    {
+      "behavior_class": "http://purl.org/mapp/mbo#CompositeBehavior",
+      "confidence": null,
+      "distance_to_target": null,
+      "evidence": null,
+      "has_duration": null,
+      "has_end": null,
+      "has_start": "2025-09-23T14:14:02Z",
+      "has_target": null,
+      "heading_to_target": null,
+      "identifier": "DZd",
+      "performed_by": "DDD",
+      "uid": "9bb69f73-1f4a-498b-953b-aeffc1240f54"
+    },
+    {
+      "behavior_class": "http://purl.org/mapp/mbo#Climbing",
+      "confidence": null,
+      "distance_to_target": null,
+      "evidence": null,
+      "has_duration": 3.0,
+      "has_end": null,
+      "has_start": "2025-09-23T14:14:02Z",
+      "has_target": null,
+      "heading_to_target": null,
+      "identifier": "Climbing",
+      "performed_by": "mouse33",
+      "uid": "6e3bded6-1fb7-42d9-a72f-53c05dd1cc79"
+    }
+  ],
+  "prefixes": {
+    "dd": "dzd.comdd",
+    "ex": "http://example.org/",
+    "mbo": "http://purl.org/mapp/mbo#"
+  }
+}

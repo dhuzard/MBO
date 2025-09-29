@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MBO Behavior Builder</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>MBO Behavior Builder</h1>
+    <p>Browse ontology classes, capture behavioral observations, validate with SHACL, and export RDF.</p>
+  </header>
+
+  <main>
+    <section id="classes" class="panel span-2">
+      <h2>Behavior Classes</h2>
+      <input type="search" id="class-filter" placeholder="Filter by label" />
+      <div id="class-list"></div>
+    </section>
+
+    <section id="behavior-form-section" class="panel">
+      <h2>Add or Edit Behavior</h2>
+      <form id="behavior-form">
+        <input type="hidden" id="behavior-uid" />
+        <div class="field">
+          <label for="identifier">Behavior identifier (CURIE or IRI)</label>
+          <input id="identifier" required placeholder="ex:approach1" />
+        </div>
+        <div class="field">
+          <label for="behavior-class">Behavior class</label>
+          <select id="behavior-class" required></select>
+          <div id="class-details"></div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label for="performed-by">Performed by</label>
+            <input id="performed-by" required placeholder="ex:mouseA" />
+          </div>
+          <div class="field">
+            <label for="has-target">Target (optional)</label>
+            <input id="has-target" placeholder="ex:novelObject1" />
+          </div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label for="has-start">Start time (ISO 8601)</label>
+            <input id="has-start" required placeholder="2025-09-23T14:05:00Z" />
+          </div>
+          <div class="field">
+            <label for="has-end">End time (ISO 8601)</label>
+            <input id="has-end" placeholder="2025-09-23T14:05:02Z" />
+          </div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label for="has-duration">Duration (seconds)</label>
+            <input id="has-duration" type="number" step="0.001" />
+          </div>
+          <div class="field">
+            <label for="confidence">Confidence (0-1)</label>
+            <input id="confidence" type="number" min="0" max="1" step="0.01" />
+          </div>
+        </div>
+        <div class="field-grid">
+          <div class="field">
+            <label for="distance-to-target">Distance to target (cm)</label>
+            <input id="distance-to-target" type="number" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="heading-to-target">Heading to target (deg)</label>
+            <input id="heading-to-target" type="number" step="0.01" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="evidence">Evidence / notes</label>
+          <textarea id="evidence" rows="3"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit">Save behavior</button>
+          <button type="button" id="reset-form" class="secondary">Reset</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="behavior-table-section" class="panel span-2">
+      <h2>Captured Behaviors</h2>
+      <div class="table-wrapper">
+        <table id="behavior-table">
+          <thead>
+            <tr>
+              <th>Identifier</th>
+              <th>Class</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Performed by</th>
+              <th>Target</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="prefixes-section" class="panel">
+      <h2>Prefix Manager</h2>
+      <div class="table-wrapper">
+        <table id="prefix-table">
+          <thead>
+            <tr>
+              <th>Prefix</th>
+              <th>IRI</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <form id="prefix-form" class="inline-form">
+        <input id="prefix-name" placeholder="prefix" required />
+        <input id="prefix-iri" placeholder="http://example.org/" required />
+        <button type="submit">Add / Update prefix</button>
+      </form>
+    </section>
+
+    <section id="validation-section" class="panel span-2">
+      <h2>Validate &amp; Export</h2>
+      <div class="actions">
+        <button id="validate-btn">Run SHACL validation</button>
+        <button id="export-btn">Export TTL</button>
+        <button id="export-file-btn">Export &amp; write to build/</button>
+      </div>
+      <pre id="validation-report"></pre>
+      <textarea id="export-output" rows="10" readonly placeholder="Exported Turtle will appear here"></textarea>
+      <p id="export-path"></p>
+    </section>
+  </main>
+
+  <script src="main.js" type="module"></script>
+</body>
+</html>
