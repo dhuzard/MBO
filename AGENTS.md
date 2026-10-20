@@ -17,8 +17,8 @@ Default to read-only review and documentation. Do not silently activate or expan
 
 ## Checks (when development resumes)
 ```bash
+python -m pip install PyYAML rdflib pyshacl
 python3 generate_ttl.py
-python -m pip install rdflib pyshacl
 pyshacl -s shapes/mbo-profile.shacl.ttl -m -f human -e src/mbo-core.ttl -e vocab/mbo-measures.ttl -e build/mbo-generated.ttl examples/mbo-newbehaviors.ttl
 ```
 These are structural examples, not proof of semantic accuracy. No automated CI qualification is implied.
