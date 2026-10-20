@@ -1,5 +1,8 @@
 # Mouse Behavior Ontology (MBO)
 
+> **Status — preliminary draft; development paused (October 2026).** MBO is an exploratory ontology, not a validated or stable community vocabulary. There is no active development programme or committed release schedule. Its examples and mappings are not normative. See [agent guidance](AGENTS.md).
+
+
 MBO is an ontology for describing mouse behaviors with operational (lab) definitions and clear mappings to external standards. It focuses on observable actions and states (e.g., locomotion, rearing, sniffing) grounded in literature.
 
 What’s here:
